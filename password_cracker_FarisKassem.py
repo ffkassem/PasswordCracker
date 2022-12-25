@@ -592,11 +592,11 @@ def main(argv=None):
     #Password 1
     password1 = "football"
     #Password 2
-    password2 = "frank+"
+    password2 = "pass/star"
     #Password 3
     password3 = "92364829"
     #Password 4
-    password4 = ""
+    password4 = "frank834"
     #Password 5
     password5 = "tIwg2s@a""
     # Password 6
@@ -704,12 +704,6 @@ def main(argv=None):
             input("Press enter to continue.")
         foundit = search_method_1(8)
     seconds = time.time() - overallstart
-    # When testing this project, some users reported that the next lines of code reported
-    # an error when Python tried to divide by zero. On those machines, the clock seems
-    # to think that the seconds calculation just above gave us "zero" seconds which doesn't
-    # make any sense. To avoid the crash though, we'll test for that case and avoid the
-    # problem.
-    print()
     if (seconds < 0.00001):
         print("The total search for all methods took " + make_human_readable(
             seconds) + " seconds and " + make_human_readable(totalguesses) + " guesses.")

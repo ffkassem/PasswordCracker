@@ -599,6 +599,7 @@ def main(argv=None):
     password4 = "frank834"
     #Password 5
     password5 = "tIwg2s@a""
+    # Last two passwords for testing other passwords if wanted
     # Password 6
     password6 = ""
     #Password 7

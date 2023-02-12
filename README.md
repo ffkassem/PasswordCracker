@@ -1,4 +1,4 @@
-# passwordCracker_ScienceFair
+# PasswordCracker
 This is code for the password cracker<br>
 not to be used to hack people without their consent<br>
 to be used only for educational purposes

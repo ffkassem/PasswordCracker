@@ -22,7 +22,6 @@ else:
 which_password = 0
 
 # Password here is not the password that is being checked don't change this area of the code
-password0 = ""  # remember, do not edit password0 here! scroll down to the "main" function!
 password1 = ""
 password2 = ""
 password3 = ""
@@ -41,7 +40,7 @@ totalguesses = 0
 # Takes a number from 0 on up and the number of digits we want it to have. It uses that
 # number of digits to make a string like "0000" if we wanted 4 or "00000" if we wanted
 # 5, converts our input number to a character string, sticks them together and then returns
-# the number we started with, with extra zeroes stuck on the beginning. 
+# the number we started with, with extra zeroes stuck on the beginning.
 def leading_zeroes(n, zeroes):
     t = ("0" * zeroes) + str(n)
     t = t[-zeroes:]
@@ -50,37 +49,33 @@ def leading_zeroes(n, zeroes):
 
 # This function checks if the MD5 hash value of the password you have guessed equals
 # the MD5 hash value of the real password.
-def check_userpass(which_password, password):
-    global password0, password1, password2, password3
+def check_userpass(chosen_pass, password):
+    global password1, password2, password3
     global password4, password5, password6
 
     result = False
 
-    if 1 == which_password:
-        if password == password0:
-            result = True
-
-    if 2 == which_password:
+    if 1 == chosen_pass:
         if password == password1:
             result = True
 
-    if 3 == which_password:
+    if 2 == chosen_pass:
         if password == password2:
             result = True
 
-    if 4 == which_password:
+    if 3 == chosen_pass:
         if password == password3:
             result = True
 
-    if 5 == which_password:
+    if 4 == chosen_pass:
         if password == password4:
             result = True
 
-    if 6 == which_password:
+    if 5 == chosen_pass:
         if password == password5:
             result = True
 
-    if 7 == which_password:
+    if 6 == chosen_pass:
         if password == password6:
             result = True
 
@@ -128,6 +123,23 @@ def cap(s: object) -> object:
     return s
 
 
+# ----------------------Number Checker---------------------------
+# Check if the input is a number
+def numCheck(num):
+    num_is_int = False
+    # Try the input as a number
+    try:
+        int(num)
+        # If the input is a number put num_is_int as True
+        num_is_int = True
+    except ValueError:
+        print("\nTry again using a whole number")
+        # If the input isn't a number put num_is_int as False
+        num_is_int = False
+    # Return num_is_int
+    return num_is_int
+
+
 # --------------------- password guessing functions ----------------------------
 '''
  *** METHOD 1 ***
@@ -142,7 +154,7 @@ def search_method_1(num_digits):
     result = False
     a = 0
     # num_digits = 3    # How many digits to try. 1 = 0 to 9, 2 = 00 to 99, etc.
-    starttime = time.time()
+    startTime = time.time()
     tests = 0
     still_searching = True
     print("\nUsing method 1 and searching for " + str(num_digits) + " digit numbers...")
@@ -152,7 +164,7 @@ def search_method_1(num_digits):
         # print(ourguess)
         tests = tests + 1
         totalguesses = totalguesses + 1
-        if (check_userpass(which_password, ourguess)):
+        if check_userpass(which_password, ourguess):
             print("Success! Password " + str(which_password) + " is " + ourguess)
             still_searching = False  # we can stop now - we found it!
             result = True
@@ -160,7 +172,7 @@ def search_method_1(num_digits):
         # print("Aw Man! "  +  ourguess  +  " is NOT the password.")
         a = a + 1
 
-    seconds = time.time() - starttime
+    seconds = time.time() - startTime
     report_search_time(tests, seconds)
     return result
 
@@ -179,14 +191,14 @@ def search_method_1(num_digits):
 def search_method_2(num_pass_wheels):
     global totalguesses
     result = False
-    starttime = time.time()
+    startTime = time.time()
     tests = 0
     still_searching = True
     print("\nUsing method 2 and searching with " + str(num_pass_wheels) + " characters.")
     # going to try all the letters, symbols, and numbers
     wheel = " ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~!@#$%^&*()_-+={}[]:<>,./X?"
     # we only allow up to 8 wheels for each password for now
-    if (num_pass_wheels > 8):
+    if num_pass_wheels > 8:
         print("Unable to handle the request. No more than 8 characters for a password")
         still_searching = False
     else:
@@ -207,7 +219,7 @@ def search_method_2(num_pass_wheels):
                 ourguess_pass = wheel[pass_wheel_array[i]] + ourguess_pass
         # Uncomment the next line if you want to see how many guesses are used
         # print("trying [" + ourguess_pass + "]")
-        if (check_userpass(which_password, ourguess_pass)):
+        if check_userpass(which_password, ourguess_pass):
             print("Success! Password  " + str(which_password) + " is " + ourguess_pass)
             still_searching = False  # we can stop now - we found it!
             result = True
@@ -227,7 +239,7 @@ def search_method_2(num_pass_wheels):
                 if i == (num_pass_wheels - 1):
                     still_searching = False
 
-    seconds = time.time() - starttime
+    seconds = time.time() - startTime
     report_search_time(tests, seconds)
     return result
 
@@ -258,7 +270,7 @@ def search_method_3(file_name):
         words[i] = cleanup(words[i])
 
     # Let's try each one as the password and see what happens
-    starttime = time.time()
+    startTime = time.time()
     tests = 0
     still_searching = True
     word1count = 0  # Which word we'll try next
@@ -268,7 +280,7 @@ def search_method_3(file_name):
         # uncomment the next line to print the current guess
         # print("Guessing: " + ourguess_pass)
         # Try it the way it is in the word list
-        if (check_userpass(which_password, ourguess_pass)):
+        if check_userpass(which_password, ourguess_pass):
             print("Success! Password " + str(which_password) + " is " + ourguess_pass)
             still_searching = False  # we can stop now - we found it!
             result = True
@@ -281,7 +293,7 @@ def search_method_3(file_name):
             ourguess_pass = ourguess_pass.capitalize()
             # uncomment the next line to print the current guess
             # print("Guessing: " + ourguess_pass)
-            if (check_userpass(which_password, ourguess_pass)):
+            if check_userpass(which_password, ourguess_pass):
                 print("Success! Password " + str(which_password) + " is " + ourguess_pass)
                 still_searching = False  # we can stop now - we found it!
                 result = True
@@ -295,7 +307,7 @@ def search_method_3(file_name):
             ourguess_pass = ourguess_pass.upper()
             # uncomment the next line to print the current guess
             # print("Guessing: " + ourguess_pass)
-            if (check_userpass(which_password, ourguess_pass)):
+            if check_userpass(which_password, ourguess_pass):
                 print("Success! Password " + str(which_password) + " is " + ourguess_pass)
                 still_searching = False  # we can stop now - we found it!
                 result = True
@@ -313,7 +325,7 @@ def search_method_3(file_name):
             ourguess_pass = "".join(ourguess_pass)
         # uncomment the next line to print the current guess
         # print("Guessing: " + ourguess_pass)
-        if (check_userpass(which_password, ourguess_pass)):
+        if check_userpass(which_password, ourguess_pass):
             print("Success! Password " + str(which_password) + " is " + ourguess_pass)
             still_searching = False  # we can stop now - we found it!
             result = True
@@ -327,7 +339,7 @@ def search_method_3(file_name):
             ourguess_pass = ourguess_pass[::-1]
             # uncomment the next line to print the current guess
             # print("Guessing: " + ourguess_pass)
-            if (check_userpass(which_password, ourguess_pass)):
+            if check_userpass(which_password, ourguess_pass):
                 print("Success! Password " + str(which_password) + " is " + ourguess_pass)
                 still_searching = False  # we can stop now - we found it!
                 result = True
@@ -337,10 +349,10 @@ def search_method_3(file_name):
             totalguesses = totalguesses + 1
 
         word1count = word1count + 1
-        if (word1count >= number_of_words):
+        if word1count >= number_of_words:
             still_searching = False
 
-    seconds = time.time() - starttime
+    seconds = time.time() - startTime
     report_search_time(tests, seconds)
     return result
 
@@ -363,12 +375,12 @@ def search_method_4(file_name):
     number_of_words = len(words)
 
     # Depending on the file system, there may be extra characters before
-    # or after the words. 
+    # or after the words.
     for i in range(0, number_of_words):
         words[i] = cleanup(words[i])
 
     # Let's try each one as the password and see what happens
-    starttime = time.time()
+    startTime = time.time()
     tests = 0
     still_searching = True
     word1count = 0  # Which word we'll try next
@@ -384,7 +396,7 @@ def search_method_4(file_name):
         number_of_words) + " words...")
 
     while still_searching:
-        if ("X" == punctuation[punc_count]):
+        if "X" == punctuation[punc_count]:
             # If we're at the end of the string and found the 'X', leave it out
             ourguess_pass = words[word1count] + words[word2count]
         else:
@@ -392,7 +404,7 @@ def search_method_4(file_name):
         # uncomment the next line to print the current guess
         # print("Guessing: " + ourguess_pass)
         # Try it the way they are in the word list
-        if (check_userpass(which_password, ourguess_pass)):
+        if check_userpass(which_password, ourguess_pass):
             print("Success! Password " + str(which_password) + " is " + ourguess_pass)
             still_searching = False  # we can stop now - we found it!
             result = True
@@ -405,8 +417,8 @@ def search_method_4(file_name):
             ourguess_pass = cap(words[word1count]) + punctuation[punc_count] + words[word2count]
             # uncomment the next line to print the current guess
             # print("Guessing: " + ourguess_pass)
-            if (check_userpass(which_password, ourguess_pass)):
-                print("Success! Passwword " + str(which_password) + " is " + ourguess_pass)
+            if check_userpass(which_password, ourguess_pass):
+                print("Success! Password " + str(which_password) + " is " + ourguess_pass)
                 still_searching = False  # we can stop now - we found it!
                 result = True
             # else:
@@ -415,10 +427,10 @@ def search_method_4(file_name):
             totalguesses = totalguesses + 1
         # Now let's try it with the first letter of the second word capitalized
         if still_searching:
-            ourguess_pass = words[word1count] + punctuation[punc_count] + cap(words[word2count])
+            ourguess_pass = words[word1count] + punctuation[punc_count] + str(cap(words[word2count]))
             # uncomment the next line to print the current guess
             # print("Guessing: " + ourguess_pass)
-            if (check_userpass(which_password, ourguess_pass)):
+            if check_userpass(which_password, ourguess_pass):
                 print("Success! Password " + str(which_password) + " is " + ourguess_pass)
                 still_searching = False  # we can stop now - we found it!
                 result = True
@@ -431,7 +443,7 @@ def search_method_4(file_name):
             ourguess_pass = cap(words[word1count]) + punctuation[punc_count] + cap(words[word2count])
             # uncomment the next line to print the current guess
             # print("Guessing: " + ourguess_pass)
-            if (check_userpass(which_password, ourguess_pass)):
+            if check_userpass(which_password, ourguess_pass):
                 print("Success! Password " + str(which_password) + " is " + ourguess_pass)
                 still_searching = False  # we can stop now - we found it!
                 result = True
@@ -441,16 +453,16 @@ def search_method_4(file_name):
             totalguesses = totalguesses + 1
 
         word1count = word1count + 1
-        if (word1count >= number_of_words):
+        if word1count >= number_of_words:
             word1count = 0
             punc_count = punc_count + 1
-            if (punc_count >= number_of_puncs):
+            if punc_count >= number_of_puncs:
                 punc_count = 0
                 word2count = word2count + 1
-                if (word2count >= number_of_words):
+                if word2count >= number_of_words:
                     still_searching = False
 
-    seconds = time.time() - starttime
+    seconds = time.time() - startTime
     report_search_time(tests, seconds)
     return result
 
@@ -465,7 +477,6 @@ def search_method_4(file_name):
 def search_method_1_and_3(file_name, num_digits):
     global totalguesses
     result = False
-    a = 0
     # Start by reading the list of words into a Python list
     f = open(file_name)
     words = f.readlines()
@@ -476,12 +487,12 @@ def search_method_1_and_3(file_name, num_digits):
         num_digits) + " digits of numbers...")
 
     # Depending on the file system, there may be extra characters before
-    # or after the words. 
+    # or after the words.
     for i in range(0, number_of_words):
         words[i] = cleanup(words[i])
 
     # Let's try each one as the password with a number and see what happens
-    starttime = time.time()
+    startTime = time.time()
     tests = 0
     still_searching = True
     word1count = 0  # Which word we'll try next
@@ -497,7 +508,7 @@ def search_method_1_and_3(file_name, num_digits):
             # uncomment the next line to print the current guess
             # print("Guessing: "+ourguess_word + str(ourguess_num))
             # Try it the way it is in the word list
-            if (check_userpass(which_password, ourguess_pass)):
+            if check_userpass(which_password, ourguess_pass):
                 print("Success! Password " + str(which_password) + " is " + ourguess_pass)
                 still_searching = False  # we can stop now - we found it!
                 result = True
@@ -510,7 +521,7 @@ def search_method_1_and_3(file_name, num_digits):
                 ourguess_pass = ourguess_word.capitalize() + str(ourguess_num)
                 # uncomment the next line to print the current guess
                 # print("Guessing: "+ourguess_pass)
-                if (check_userpass(which_password, ourguess_pass)):
+                if check_userpass(which_password, ourguess_pass):
                     print("Success! Password " + str(which_password) + " is " + ourguess_pass)
                     still_searching = False  # we can stop now - we found it!
                     result = True
@@ -524,7 +535,7 @@ def search_method_1_and_3(file_name, num_digits):
                 ourguess_pass = ourguess_word.upper() + str(ourguess_num)
                 # uncomment the next line to print the current guess
                 # print("Guessing: "+ourguess_pass)
-                if (check_userpass(which_password, ourguess_pass)):
+                if check_userpass(which_password, ourguess_pass):
                     print("Success! Password " + str(which_password) + " is " + ourguess_pass)
                     still_searching = False  # we can stop now - we found it!
                     result = True
@@ -545,7 +556,7 @@ def search_method_1_and_3(file_name, num_digits):
 
                 # uncomment the next line to print the current guess
                 # print("Guessing: "+ ourguess_pass)
-                if (check_userpass(which_password, ourguess_pass)):
+                if check_userpass(which_password, ourguess_pass):
                     print("Success! Password " + str(which_password) + " is " + ourguess_pass)
                     still_searching = False  # we can stop now - we found it!
                     result = True
@@ -553,15 +564,15 @@ def search_method_1_and_3(file_name, num_digits):
                 # print ("Aw Man! " + ourguess_pass + " is NOT the password.")
                 tests = tests + 1
                 totalguesses = totalguesses + 1
-                
+
             # Now lets check it with the words backwards
             if still_searching:
-                ourguess_word = ourguessword.lower()
+                ourguess_word = ourguess_word.lower()
                 ourguess_word = ourguess_word[::-1]
                 ourguess_pass = ourguess_word + str(ourguess_num)
                 # uncomment the next line to print the current guess
                 # print("Guessing: "+ourguess_pass)
-                if (check_userpass(which_password, ourguess_pass)):
+                if check_userpass(which_password, ourguess_pass):
                     print("Success! Password " + str(which_password) + " is " + ourguess_pass)
                     still_searching = False  # we can stop now - we found it!
                     result = True
@@ -573,10 +584,10 @@ def search_method_1_and_3(file_name, num_digits):
             a = a + 1
 
         word1count = word1count + 1
-        if (word1count >= number_of_words):
+        if word1count >= number_of_words:
             still_searching = False
 
-    seconds = time.time() - starttime
+    seconds = time.time() - startTime
     report_search_time(tests, seconds)
     return result
 
@@ -584,26 +595,24 @@ def search_method_1_and_3(file_name, num_digits):
 # -------------------------- main function ----------------------------
 
 def main(argv=None):
-    global password0, password1, password2, password3
+    global password1, password2, password3
     global password4, password5, password6, totalguesses
     global which_password
 
     # Here is where you change the passwords
-    #Password 1
+    # Password 1
     password1 = "football"
-    #Password 2
+    # Password 2
     password2 = "pass/star"
-    #Password 3
+    # Password 3
     password3 = "92364829"
-    #Password 4
+    # Password 4
     password4 = "frank834"
-    #Password 5
+    # Password 5
     password5 = "tIwg2s@a"
     # Last two passwords for testing other passwords if wanted
     # Password 6
     password6 = ""
-    #Password 7
-    password7 = ""
 
     # start searching
     which_password = 1
@@ -612,7 +621,10 @@ def main(argv=None):
         print()
         print("This program will use several different algorithms to try and guess passwords.")
         print()
-    which_password = int(input("Which password do you want to try to guess (1-7)? "))
+    which_password = int(input("Which password do you want to try to guess (1-6)? "))
+    while numCheck(which_password) or 1 <= int(which_password) <= 6:
+        print("Put a number that is 1-6 this time: ")
+        which_password = int(input("Which password do you want to try to guess (1-6)? "))
 
     if show_instructions:
         print()
@@ -644,19 +656,19 @@ def main(argv=None):
         if show_instructions:
             input("Press enter to continue.")
         foundit = search_method_1(1)
-    # Still looking? See if it's a 2 digit number
+    # Still looking? See if it's a 2-digit number
     if not foundit:
         print("Method 1 (1 digit) did not work!")
         if show_instructions:
             input("Press enter to continue.")
         foundit = search_method_1(2)
-    # Still looking? See if it's a 3 digit number
+    # Still looking? See if it's a 3-digit number
     if not foundit:
         print("Method 1 (2 digit) did not work!")
         if show_instructions:
             input("Press enter to continue.")
         foundit = search_method_1(3)
-    # Still looking? See if it's a 4 digit number
+    # Still looking? See if it's a  4-digit number
     if not foundit:
         print("Method 1 (3 digit) did not work!")
         if show_instructions:
@@ -685,27 +697,27 @@ def main(argv=None):
         foundit = search_method_1_and_3('passwords.txt', 4)
 
     # Still looking? Use our rotary wheel simulation up to 6 wheels.
-    # This should take care of any 5 digit number as well as letter
+    # This should take care of any 5-digit number as well as letter
     # combinations up to 6 characters
     if not foundit:
         print("Method 1 and 3 (3 digits) didn't work!")
         if show_instructions:
             input("Press enter to continue.")
         foundit = search_method_2(6)
-    # Still looking? Try 7 digit numbers
+    # Still looking? Try 7-digit numbers
     if not foundit:
         print("Method 2 (6 digits) did not work!")
         if show_instructions:
             input("Press enter to continue.")
         foundit = search_method_1(7)
-    # Still looking? Try 8 digit numbers
+    # Still looking? Try 8-digit numbers
     if not foundit:
         print("Method 2 (7 digits) did not work!")
         if show_instructions:
             input("Press enter to continue.")
         foundit = search_method_1(8)
     seconds = time.time() - overallstart
-    if (seconds < 0.00001):
+    if seconds < 0.00001:
         print("The total search for all methods took " + make_human_readable(
             seconds) + " seconds and " + make_human_readable(totalguesses) + " guesses.")
         print("(on some machines, Python doesn't know how long things actually took)")
@@ -715,7 +727,7 @@ def main(argv=None):
             totalguesses / seconds) + " guesses per second)")
     print()
     if foundit:
-        print("Lets goooo! \nThe password has been correctly guessed")
+        print("Lets goo! \nThe password has been correctly guessed")
 
 
 if __name__ == "__main__":
